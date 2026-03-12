@@ -1,0 +1,40 @@
+%-------------------------------------------------------------
+%  Package: beamertheme-SimpleDarkBlue
+%  Author: Pin-Yen Huang (pyhuang97@gmail.com)
+%  Version: 1.1, 2025-01-12
+%  Link: https://github.com/pm25/SimpleDarkBlue-BeamerTheme
+%  This is free and unencumbered software released into the
+%  public domain; see <http://unlicense.org> for details.
+%-------------------------------------------------------------
+
+%--------------------------------------
+%  Color Settings
+%--------------------------------------
+
+% define custom colors (red theme variants)
+\definecolor{MutedRed}{rgb}{0.97, 0.92, 0.92}
+\definecolor{MutedGreen}{rgb}{0.92, 0.97, 0.92}
+\definecolor{MutedRedLight}{rgb}{0.98, 0.94, 0.94}
+\definecolor{MutedBlack}{rgb}{0.95, 0.95, 0.95}
+
+\definecolor{MediumRed}{rgb}{0.925, 0.345, 0.345}
+\definecolor{MediumGreen}{rgb}{0.37, 0.7, 0.66}
+\definecolor{CrimsonRed}{rgb}{0.55, 0.12, 0.12}
+\definecolor{MediumBlack}{rgb}{0.219, 0.259, 0.349}
+
+\definecolor{DarkRed}{rgb}{0.4, 0.05, 0.05}
+\definecolor{DarkRedNav}{rgb}{0.35, 0.05, 0.08}
+
+% set beamer color themes
+\usecolortheme[named=DarkRed]{structure}
+
+% customize colors for elements
+\setbeamercolor{title}{bg=DarkRed,fg=white}
+\setbeamercolor{frametitle}{bg=DarkRed,fg=white}
+
+\setbeamercolor{block title}{fg=white,bg=CrimsonRed}
+\setbeamercolor{block body}{fg=black,bg=MutedRedLight}
+\setbeamercolor{block title example}{fg=white,bg=MediumGreen}
+\setbeamercolor{block body example}{fg=black,bg=MutedGreen}
+\setbeamercolor{block title alerted}{fg=white,bg=MediumRed}
+\setbeamercolor{block body alerted}{fg=black,bg=MutedRed}
