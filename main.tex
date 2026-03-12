@@ -10,7 +10,8 @@
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{tikz}
 \usetikzlibrary{decorations.pathreplacing}
-\usetikzlibrary{shapes, arrows, positioning}
+\usetikzlibrary{shapes, arrows, positioning, calc, fit}
+\usepackage{amsmath}
 
 % --- HYPERLINKS & COLORS ---
 \usepackage{hyperref}
@@ -82,8 +83,8 @@
 %    TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Context-Based Interpretation of Fin. Info.]{Context-Based Interpretation of Financial Information}
-\subtitle{Kim, A. G., \& Nikolaev, V. V. (JAR 2024)}
+\title[Benefits of Fin. Stmt. Comparability]{The Benefits of Financial Statement Comparability}
+\subtitle{De Franco, G., Kothari, S.P., \& Verdi, R.S. (JAR 2011)}
 
 \author[Jayden Liu]{Presenter: Jayden Liu}
 
@@ -110,315 +111,426 @@
 \end{frame}
 
 
-% Introduction --- --- --- --- --- --- --- --- --- --- --- --- 
+% ============================================================
+% Introduction
+% ============================================================
 \section{Introduction}
 
 \begin{frame}{Motivation}
     \begin{itemize}
-        \item \textbf{Multimodal Disclosures:} Firms communicate performance using both financial numbers and narrative text.
-        \item \textbf{Regulatory Requirement:} The SEC requires \textbf{MD\&A} to provide nonquantitative context to help investors accurately interpret financial results.
-        \item \textbf{Standard-Setter Objective:} The SEC and IASB are actively seeking ways to improve how narrative disclosures complement numeric data.
+        \item \textbf{Regulatory Emphasis:} The SEC \citeyearpar{sec2000} stresses that comparable financial statements facilitate \textbf{efficient capital allocation} and nurture investor confidence.
+        \item \textbf{FASB Conceptual Framework:} ``Investing and lending decisions \dots\ cannot be made rationally if comparative information is not available'' \citep{fasb1980}.
+        \item \textbf{Practical Importance:} Financial analysis textbooks universally emphasize cross-firm comparability for ratio analysis and performance benchmarking.
+        \item \textbf{The Gap:} Despite widespread agreement on its importance, \textcolor{hkustred}{\textbf{no empirical construct}} of comparability existed, and \textcolor{hkustred}{\textbf{little evidence}} documented its benefits to users.
     \end{itemize}
-\end{frame}
-
-\begin{frame}{Motivation: Financial Numbers and Narrative Text}
-An example of AAPL's financial numbers and narrative text: 
-    \begin{figure}
-        \centering
-        \includegraphics[height=0.5\textheight, keepaspectratio]{pic/fig1.png}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Motivation: Financial Numbers and Narrative Text}
-    \begin{figure}
-        \centering
-        \includegraphics[height=0.8\textheight, keepaspectratio]{pic/fig2.png}  
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Motivation: Financial Numbers and Narrative Text}
-    \begin{figure}
-        \centering
-        \includegraphics[height=0.8\textheight, keepaspectratio]{pic/fig3.png}  
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Research Gap}
-    \begin{columns}
-        % Left Column: Concise Text
-        \begin{column}{0.45\textwidth}
-            \begin{itemize}
-                \item \textbf{Prior Studies:} Textual disclosures (e.g., MD\&A) show moderate direct predictive power.
-                \item \textbf{Shallow Interactions:} Previous models combine numbers and text using unidimensional features (e.g., readability, sentiment) and simple linear frameworks.
-                \item \textbf{Methodological Gap:} Standard methods miss the \textbf{non-linear interactions} between high-dimensional narrative semantics and reported numbers.
-            \end{itemize}
-        \end{column}
-        
-        % Right Column: TikZ Diagram
-        \begin{column}{0.55\textwidth}
-            \begin{figure}
-                \centering
-                \resizebox{\textwidth}{!}{
-                \begin{tikzpicture}[
-                    node distance=1.5cm and 0.8cm,
-                    box/.style={draw, rounded corners, fill=gray!10, align=center, minimum height=0.9cm, font=\small},
-                    arrow/.style={-latex, thick, draw=hkustblue}
-                ]
-                
-                % --- Prior Literature ---
-                \node[box] (prior_text) {1D Text Feature \\ (e.g., Readability)};
-                \node[box, below=0.3cm of prior_text] (prior_num) {Numeric \\ Data};
-                \node[box, fill=gray!20, right=0.8cm of prior_text, yshift=-0.65cm] (linear) {Shallow/Linear \\ Interaction};
-                \node[box, fill=hkustred!20, right=0.8cm of linear] (result1) {Trivial \\ Value};
-
-                \draw[arrow] (prior_text) -| (linear);
-                \draw[arrow] (prior_num) -| (linear);
-                \draw[arrow] (linear) -- (result1);
-
-                \node[above=0.2cm of prior_text, font=\bfseries\small, text=hkustblue] {Prior Literature};
-
-                % --- This Paper ---
-                \node[box, below=1.2cm of prior_num] (new_text) {High-Dim Text \\ Semantics (BERT)};
-                \node[box, below=0.3cm of new_text] (new_num) {Numeric \\ Data};
-                \node[box, fill=hkustyellow!30, right=0.8cm of new_text, yshift=-0.65cm] (deep) {Deep Non-Linear \\ Network (ANN)};
-                \node[box, fill=hkustyellow!50, right=0.8cm of deep] (result2) {High \\ Contextuality};
-
-                \draw[arrow] (new_text) -| (deep);
-                \draw[arrow] (new_num) -| (deep);
-                \draw[arrow] (deep) -- (result2);
-
-                \node[above=0.2cm of new_text, font=\bfseries\small, text=hkustblue] {This Paper};
-                
-                \end{tikzpicture}
-                }
-            \end{figure}
-        \end{column}
-    \end{columns}
 \end{frame}
 
 \begin{frame}{Research Question}
     \vspace{0.5cm}
     \begin{center}
-        \Large \textit{``To what extent does the \textbf{narrative context} surrounding the numbers in financial statements \textbf{alter the informativeness} of these numbers? (contextualize them?)''}
+        \Large \textit{``How can we \textbf{measure} financial statement comparability, and does higher comparability \textbf{benefit} financial statement users?''}
     \end{center}
     \vspace{0.5cm}
     \begin{itemize}
-        \item How economically important are the complementarities between numeric and narrative disclosures in \textbf{shaping investor beliefs}?
-        \item \textbf{Under what specific economic circumstances} does narrative context matter the most for interpreting financial data?
+        \item \textbf{Develop} a firm-specific, output-based, quantitative measure of financial statement comparability.
+        \item \textbf{Document} benefits to sell-side analysts: coverage, forecast accuracy, and forecast dispersion.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Theory and Hypotheses}
+
+% ============================================================
+% Theoretical Foundation
+% ============================================================
+\section{Theoretical Foundation}
+
+\begin{frame}{Conceptual Definition of Comparability}
+    \begin{block}{FASB Definition}
+        ``Comparability is the quality of information that enables users to identify \textbf{similarities and differences} between two sets of economic phenomena'' \citep{fasb1980}.
+    \end{block}
+    \vspace{0.3cm}
     \begin{itemize}
-        \item \textbf{Contextualization:} Narrative disclosures contain useful informon and provide a rich context aiming to help investors to understand the reported amounts \citep{bryan1997incremental,li2010information,mayew2015md}. 
-        \item \textbf{Interactions:} The qualitative information which may seem immaterial on their own, when \textbf{interacting with financial numbers} in complex ways can be valuable for \textbf{predicting future outcomes}.
+        \item The \textbf{accounting system} is a mapping from economic events to financial statements:
+        \[
+            \text{Financial Statements}_i = f_i(\text{Economic Events}_i)
+        \]
+        \item Two firms have \textcolor{hkustred}{\textbf{comparable}} accounting systems if, for a \textbf{given set of economic events}, they produce \textbf{similar financial statements}.
+        \item Comparability $\neq$ Uniformity: firms may use different accounting methods yet still produce comparable outputs.
     \end{itemize}
 \end{frame}
 
-% Research Design --- --- --- --- --- --- --- --- --- --- --- --- 
-\section{Research Design}
-
-\begin{frame}{Encoding Narrative Information (BERT)}
-    \begin{itemize}
-        \item \textbf{Text Extraction:} Extract \textbf{MD\&A sentences} with earnings keywords, plus \textcolor{hkustred}{\textbf{one adjacent sentence}} on each side for context.
-        \item \textbf{Encoding Process:} Divide text into passages of up to 512 tokens and process via a pre-trained \textcolor{hkustred}{\textbf{BERT-base uncased model}}.
-        \item \textbf{Why BERT?:} Unlike bag-of-words, BERT uses \textcolor{hkustred}{\textbf{self-attention}} to dynamically learn semantic meaning, capturing the \textbf{high-dimensional, complex narratives} in financial disclosures.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Modeling Contextualized Interpretation (ANN)}
-    \begin{itemize}
-        \item \textbf{The Mechanism:} Deploy an \textbf{Artificial Neural Network (ANN)} to capture the \textcolor{hkustred}{\textbf{deep, highly nonlinear interactions}} between textual features and accounting numbers.
-        \item \textbf{Network Architectures:}
-        \begin{itemize}
-            \item \textbf{Fully Connected:} Contextual neurons directly \textcolor{hkustred}{\textbf{influence the activation}} of numeric neurons, allowing the narrative to effectively \textit{contextualize} the numbers.
-            \item \textbf{Partially Connected:} Restricts cross-layer interactions, isolating the standalone (direct) value of the text as a baseline.
-        \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Neural Network Architectures}
-    \begin{columns}[T] % The [T] aligns the columns at the top
-        
-        % Left Column: Figure 4
-        \begin{column}{0.5\textwidth}
-            \begin{figure}
-                \centering
-                \includegraphics[width=1\textwidth, keepaspectratio]{pic/fig4.png}
-                \vspace{0.2cm}
-            \end{figure}
+\begin{frame}{Theoretical Mechanism: Why Comparability Benefits Analysts}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \begin{itemize}
+                \item \textbf{Better Benchmarks:} More comparable firms constitute better benchmarks for evaluating performance.
+                \item \textbf{Information Transfer:} Financial information of comparable peers is more transferable \citep{ramnath2002investor, gleason2008contagion, durnev2009corporate}.
+                \item \textbf{Lower Acquisition Cost:} Analysts face lower costs when acquiring and processing information about firms with comparable peers.
+                \item \textbf{Net Effect:} A richer, higher-quality information set for the analyst.
+            \end{itemize}
         \end{column}
-        
-        % Right Column: Figure 5
-        \begin{column}{0.5\textwidth}
-            \begin{figure}
-                \centering
-                \includegraphics[width=1\textwidth, keepaspectratio]{pic/fig5.png}
-                \vspace{0.2cm}
-            \end{figure}
+        \begin{column}{0.42\textwidth}
+            \centering
+            \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[
+                node distance=0.6cm,
+                box/.style={draw, rounded corners, fill=gray!10, align=center, minimum width=3.8cm, minimum height=0.7cm, font=\small},
+                arrow/.style={-latex, thick, draw=hkustblue}
+            ]
+                \node[box, fill=hkustyellow!25] (comp) {Higher Comparability};
+                \node[box, below=of comp] (bench) {Better Benchmarks};
+                \node[box, below=of bench] (transfer) {Greater Info Transfer};
+                \node[box, below=of transfer] (cost) {Lower Acquisition Cost};
+                \node[box, below=of cost, fill=hkustred!20] (quality) {Higher-Quality\\Info Set for Analysts};
+                
+                \draw[arrow] (comp) -- (bench);
+                \draw[arrow] (comp) -- (transfer);
+                \draw[arrow] (bench) -- (cost);
+                \draw[arrow] (transfer) -- (cost);
+                \draw[arrow] (cost) -- (quality);
+            \end{tikzpicture}
+            }
         \end{column}
     \end{columns}
-    \small In the fully connected model, each neuron stemming from textual input participates in the activation of numeric neurons. This allows two types of input to \textcolor{hkustred}{\textbf{interact in complex ways}}.
 \end{frame}
 
-\begin{frame}{Data Collection and Processing}
-    \begin{itemize}
-        \item \textbf{Sample Construction:} Analyzed machine-readable SEC \textbf{MD\&A filings from 1995 to 2021}, merging textual data with Compustat (financials) and CRSP (returns).
-        \item \textbf{Narrative Extraction:} Identified sentences containing earnings-related keywords and extracted \textbf{one adjacent sentence on each side} to capture the context.
-        \item \textbf{BERT Encoding:} Processed the extracted text in 512-token passages through a \textbf{BERT-base uncased model}. Averaged the output CLS token vectors to create a \textbf{768-dimensional context vector} for each MD\&A.
-        \item \textbf{Final Sample:} Yielded 87,201 firm-year observations for earnings/cash flow tests and 62,287 observations for stock return predictions.
-    \end{itemize}
-\end{frame}
 
-\begin{frame}{Model Design (ANN Architecture)}
-    \begin{itemize}
-        \item \textbf{Target Variable ($T_{t+1}$):} Predicts directional changes (increase/decrease) in future performance (earnings, cash flows, or stock returns). 
-        \item \textbf{Model Inputs:} 
-        \begin{itemize}
-            \item \textcolor{hkustred}{\textbf{Accounting Vector ($A_t$):}} 10D vector of current and lagged earnings and OCF. 
-            \item \textcolor{hkustred}{\textbf{Context Vector ($C_t$):}} 10D CLS vector compressed from the 768D BERT output. 
-        \end{itemize}
-        \item \textbf{Function:} $E_{t}[T_{t+1}|A_{t},C_{t}]=\Lambda_{t}(A_{t},C_{t})$, where deep nonlinear interactions contextualize the numbers.
-        \item \textbf{Network Architectures:} 
-        \begin{itemize}
-            \item \textcolor{hkustred}{\textbf{Fully Connected:}} All neurons interact (256 $\rightarrow$ 20 $\rightarrow$ 2). Text directly influences the interpretation of numbers. 
-            \item \textcolor{hkustred}{\textbf{Partially Connected:}} Restricts interactions (e.g., split 128/128 in Hidden Layer 1). Isolates the standalone value of text. 
-        \end{itemize}
-        \item \textbf{Contextuality Measure:} Evaluated as the \textcolor{hkustred}{\textbf{difference in accuracy}} between the fully connected and partially connected models. 
-    \end{itemize}
-\end{frame}
+% ============================================================
+% Literature & Contribution
+% ============================================================
+\section{Literature \& Contribution}
 
-% Results --- --- --- --- --- --- --- --- --- --- --- 
-\section{Results}
-
-\begin{frame}{Predicting Future Fundamentals: Earnings \& Cash Flows}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.48\textwidth, keepaspectratio]{pic/tab3.png}
-        \hfill
-        \includegraphics[width=0.5\textwidth, keepaspectratio]{pic/tab4.png}
-    \end{figure}
-    
-    \vspace{-0.2cm} % Adjust this value if you need more or less space between the image and text
-    
-    \begin{itemize}
-        \item \textbf{Directional Prediction:} The fully connected model achieves an accuracy of \textbf{64.86\%} \& \textbf{64.74\%} in earnings and OCF forecast.
-        \item \textbf{Performance Metrics:} Area Under the ROC Curve (AUC) and Macro F1-scores confirm the model minimizes both Type I and Type II errors.
-        \item \textbf{Time Trend:} Evaluated via the regression $Dep\_Var_{t}=\lambda_{0}+\lambda_{1}Time_{t}+\epsilon_{t}$. 
-        The contextuality of earnings exhibits a \textbf{positive and statistically significant growth trend} ($\lambda_1 > 0$), indicating narrative context is increasingly important over time.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Stock Return: Does Market Recognize the Context?}
-\begin{figure}
-        \centering
-        \includegraphics[width=0.48\textwidth, keepaspectratio]{pic/tab5.png}
-        \hfill
-        \includegraphics[width=0.5\textwidth, keepaspectratio]{pic/tab6.png}
-    \end{figure}
-    
-    \vspace{-0.2cm} 
-    \begin{itemize}
-        \item \textbf{Annual Returns (Longer Window):} Incorporating context interactions improves long-window return predictions by over 4.5 percentage points.
-        \item \textbf{60-Day Returns (Post-Filing):} Excludes the initial earnings surprise to focus on the MD\&A details. The fully connected model yields an \textbf{11\% increase} in accuracy.
-        \item \textbf{Takeaway:} The stock market actively prices the nonlinear interactions between reported financials and narrative text.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{When Does Context Matter Most?}
-\begin{figure}
-        \centering
-        \includegraphics[width=0.9\textwidth, keepaspectratio]{pic/tab7.1.png}
-    \end{figure}
-    \vspace{-0.2cm}
-    \begin{itemize}
-        \item \textbf{Firm-Level Uncertainty (Cross-Sectional):} Contextual information becomes significantly more valuable when the numeric data is 1) less likely to be forward-looking or 2) is harder to evaluate. Proxies:
-        \begin{itemize}
-            \item 1): High earnings volatility \citep{dichev2009earnings}, extreme accruals (top/bottom 20\%) \citep{sloan1996stock}, reported operating losses \citep{hayn1995information}.
-            \item 2): M/B ratio \citep{beaver2005conditional}, political risk \citep{hassan2019firm}.
-        \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{When Does Context Matter Most?}
-\begin{figure}
-        \centering
-        \includegraphics[width=1.0\textwidth, keepaspectratio]{pic/tab7.2.png}
-    \end{figure}
-    \begin{itemize}
-        \item \textbf{Macro-Level Uncertainty (Time-Series):} Contextuality spikes during periods when it is difficult to map accounting numbers to valuations. Regress annual average contextuality on three variables:
-        \begin{itemize}
-            \item The 2008 Global Financial Crisis.
-            \item The COVID-19 Pandemic (2020).
-            \item Periods of high Economic Policy Uncertainty (EPU).
-        \end{itemize}
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Human Validation: Security Analysts}
-\begin{figure}
-        \centering
-        \includegraphics[width=1.0\textwidth, keepaspectratio]{pic/tab8.png}
-    \end{figure}
-    \begin{itemize}
-        \item \textbf{Hypothesis:} If contextualization is real, human decision-makers (analysts) should also rely on these interactions when revising their forecasts.
-        \item \textbf{Findings:} The fully connected ANN model explains analysts' forecast revisions significantly better than models lacking textual interaction.
-        \item It yields a \textbf{6.45 percentage point increase} in explanatory power over forecast revisions (using actual EPS benchmark).
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Application: Contextualized Earnings Persistence}
-    \begin{itemize}
-        \item \textbf{The Challenge:} Standard earnings persistence measures rely on rigid rolling windows (context-free) and fail to capture dynamic, firm-year specific changes.
-        \item \textbf{The Approach:} The authors model the persistence parameter as a \textcolor{hkustred}{\textbf{nonparametric function of high-dimensional textual vectors}} using deep learning.
-        \item \textbf{Rich Heterogeneity:} This context-based measure uncovers substantial firm-year variation in earnings quality that standard firm characteristics (e.g., size, M/B) cannot explain.
-        \item \textbf{Predictability:} Context-based persistence significantly outperforms traditional models in predicting \textbf{out-of-sample} earnings dynamics.
-        \item \textbf{Economic Magnitude:} Incorporating the narrative context reduces the \textcolor{hkustred}{\textbf{Mean Absolute Error (MAE) by over 50\%}} (from 5.65 down to 2.21) compared to context-free estimates.
-    \end{itemize}
-\end{frame}
-
-% Discussion --- --- --- --- --- --- --- --- --- --- --- --- 
-% Discussion --- --- --- --- --- --- --- --- --- --- --- --- 
-\section{Discussion}
-
-\begin{frame}{Contributions}
-    \begin{itemize}
-        \item \textbf{Methodological Innovation:} Introduces a novel deep learning approach \textcolor{hkustred}{\textbf{(BERT + ANN)}} to quantify the \textit{contextuality} of textual disclosures, moving beyond unidimensional features like readability or sentiment.
-        \item \textbf{Economic Magnitude:} Quantifies the \textcolor{hkustred}{\textbf{(collective value of numeric-narrative interactions)}}, proving they are economically large.
-        \item \textbf{Textual Analysis of Corporate Communications:} Answers the call in literature to apply deep learning to capture unknown, high-dimensional features and \textcolor{hkustred}{\textbf{(complex nonlinearities)}} in accounting data.
-        \item \textbf{New Accounting Metric:} Develops a dynamic, firm-year specific measure of \textcolor{hkustred}{\textbf{context-based earnings persistence}} that outperforms traditional rolling-window OLS estimates.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Strengths \& Weaknesses}
+\begin{frame}{Prior Literature on Comparability}
     \begin{columns}[T]
         \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustred}{Strengths}}
+            \textbf{\textcolor{hkustblue}{Input-Based (Accounting Methods)}}
             \begin{itemize}
-                \item \textbf{ANN Architecture:} Mimics human cognitive processing by allowing deep interactions across neural layers.
-                \item \textbf{Rich Results:} Evaluates multiple fundamental (earnings, OCF) and market (returns) targets over a long sample period (1995-2021).
-                \item \textbf{Practical Application:} Validates the methodology by solving a real-world accounting challenge (measuring firm-year earnings persistence).
+                \item \citet{bradshaw2008harmonizing}: Whether international firms adopting U.S.\ GAAP actually harmonize methods.
+                \item \citet{defond2003empirical}: Accounting choice heterogeneity (LIFO vs.\ FIFO) increases comparison difficulty.
+                \item \citet{bradshaw2009accounting}: Atypical accounting methods in an industry.
             \end{itemize}
+            \vspace{0.2cm}
+            \textcolor{hkustred}{\textbf{Limitations:}} Researcher must decide \textit{which} choices, \textit{how} to weight them, and data collection is costly.
         \end{column}
-        
         \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{teal}{Weaknesses \& Limitations}}
+            \textbf{\textcolor{hkustblue}{Cross-Sectional Levels}}
             \begin{itemize}
-                \item \textbf{The "Black Box" Problem:} While highly predictive, ANNs offer limited explaination regarding \textit{which} specific words or phrases drive the results (like RFs).
-                \item \textbf{Scope Limitation:} Focuses exclusively on MD\&A sections, potentially missing context from other filing sections or earnings call Q\&A transcripts.
+                \item \citet{joos1994effects}, \citet{land2002empirical}: Similarities in contemporaneous levels (ROE, size, price multiples) at a single point.
+                \item Designed primarily for \textbf{cross-country} comparisons.
             \end{itemize}
+            \vspace{0.2cm}
+            \textcolor{hkustred}{\textbf{Limitations:}} Static, not firm-specific, and do not capture dynamic similarities over time.
         \end{column}
     \end{columns}
 \end{frame}
 
-\begin{frame}{Future Research Directions}
+\begin{frame}{How This Paper Differs}
+    \begin{center}
+    \small
+    \begin{tabular}{p{3.2cm} p{4.2cm} p{4.8cm}}
+        \toprule
+        \textbf{Dimension} & \textbf{Prior Literature} & \textbf{De Franco et al.\ (2011)} \\
+        \midrule
+        Approach & \textbf{Input-based} (accounting methods) & \textbf{Output-based} (reported earnings) \\[4pt]
+        Level & Country- or method-level & \textbf{Firm-specific} and \textbf{firm-pair} \\[4pt]
+        Dynamics & Static, single point in time & \textbf{Dynamic}, rolling 16 quarters \\[4pt]
+        Data & Hand-collected accounting choices & \textbf{Widely available} return \& earnings data \\[4pt]
+        vs.\ Earnings Attributes & Firm-specific (accrual quality, predictability) & \textbf{Relational} measure across firm pairs \\[4pt]
+        Outcome & Accounting harmonization & \textbf{Benefits to users} (analysts) \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+\end{frame}
+
+
+% ============================================================
+% Empirical Specifications
+% ============================================================
+\section{Empirical Specifications}
+
+\begin{frame}{Libby Box: Research Design Overview}
+    \centering
+    \resizebox{0.92\textwidth}{!}{
+    \begin{tikzpicture}[
+        box/.style={draw, thick, rounded corners=3pt, minimum width=5cm, minimum height=1.5cm, align=center, font=\small},
+        label/.style={font=\bfseries\small, text=hkustblue},
+        arrow/.style={-latex, very thick, draw=hkustblue},
+        darrow/.style={dashed, -latex, thick, draw=gray!70}
+    ]
+    
+    % Top row: Conceptual
+    \node[box, fill=hkustyellow!15] (cx) at (0, 3) {Similarity of accounting\\systems $f_i(\cdot) \approx f_j(\cdot)$};
+    \node[box, fill=hkustyellow!15] (cy) at (10, 3) {Information quality\\for financial statement users};
+    
+    % Bottom row: Operational
+    \node[box, fill=gray!10] (ox) at (0, 0) {\textbf{CompAcct}: $-\frac{1}{16}\sum |E(Earn_{iit}) - E(Earn_{ijt})|$ \\ from earnings--return regression};
+    \node[box, fill=gray!10] (oy) at (10, 0) {\textbf{Y}: Analyst Coverage,\\Forecast Accuracy, Dispersion};
+    
+    % Arrows
+    \draw[arrow] (cx) -- node[above, font=\small]{Predicted causal relation} (cy);
+    \draw[darrow] (cx) -- node[left, font=\small, text=black]{Operationalize} (ox);
+    \draw[darrow] (cy) -- node[right, font=\small, text=black]{Operationalize} (oy);
+    \draw[arrow] (ox) -- node[below, font=\small]{Empirical association} (oy);
+    
+    % Labels
+    \node[label, above=0.15cm of cx] {Conceptual IV (X)};
+    \node[label, above=0.15cm of cy] {Conceptual DV (Y)};
+    \node[label, below=0.15cm of ox] {Operational IV (X)};
+    \node[label, below=0.15cm of oy] {Operational DV (Y)};
+    
+    % Controls
+    \node[box, fill=hkustred!10, minimum width=9.5cm, minimum height=0.8cm] (ctrl) at (5, -2) {Controls: Size, B/M, Volume, R\&D, Depreciation, Issue, Predictability, Volatility};
+    \draw[darrow, draw=hkustred!70] (ctrl) -- ($(ox.south)+(0.5,0)$);
+    \draw[darrow, draw=hkustred!70] (ctrl) -- ($(oy.south)+(-0.5,0)$);
+    
+    \end{tikzpicture}
+    }
+\end{frame}
+
+\begin{frame}{Measuring Comparability: The Accounting Function}
+    \textbf{Step 1:} Estimate each firm's accounting function using 16 quarters of data:
+    \[
+        Earnings_{it} = \alpha_i + \beta_i \, Return_{it} + \varepsilon_{it} \quad \text{--- Eq.\ (2)}
+    \]
+    \vspace{0.1cm}
+    \textbf{Step 2:} Predict earnings using both firm $i$'s and firm $j$'s functions, holding economic events constant (using firm $i$'s returns):
+    \begin{align*}
+        E(Earnings)_{iit} &= \hat{\alpha}_i + \hat{\beta}_i \, Return_{it} \\
+        E(Earnings)_{ijt} &= \hat{\alpha}_j + \hat{\beta}_j \, Return_{it}
+    \end{align*}
+    \textbf{Step 3:} Comparability = negative average absolute difference:
+    \[
+        CompAcct_{ijt} = -\frac{1}{16} \sum_{t-15}^{t} \bigl| E(Earnings_{iit}) - E(Earnings_{ijt}) \bigr|
+    \]
+    Greater (less negative) values $\Rightarrow$ \textcolor{hkustred}{\textbf{greater comparability}}.
+\end{frame}
+
+\begin{frame}{Aggregation to Firm-Level Measures}
     \begin{itemize}
-        \item \textbf{Vocal Cues \& Narrative Context:} Extending the methodology to examine how managerial vocal cues (affective states) provide context to oral narratives during earnings conference calls (Katrina's presentation on vocal delivery quality ).
-        \item \textbf{Detecting Deception:} Exploring interactions between verbal communications and nonverbal cues (e.g., gestures, facial expressions, body language) to detect fraudulent reporting and deceptive practices (Xi Zhen's presentation on CEO facial expressions).
-        \item \textbf{Accounting Quality \& Manipulation:} Applying the context-based persistence framework to better evaluate overall earnings quality and detect earnings manipulation.
-        \item \textbf{Cross-Regime Comparisons:} Using this approach to compare the usefulness of context across different regulatory disclosure regimes.
+        \item $CompAcct_{ijt}$ is computed for \textbf{every firm-pair} $(i,j)$ within the same 2-digit SIC industry.
+        \item \textbf{Firm-level aggregation:}
+        \begin{itemize}
+            \item \textcolor{hkustred}{\textbf{CompAcct4$_{it}$}}: Average $CompAcct_{ijt}$ of the \textbf{four most comparable} firms $j$ to firm $i$.
+            \item \textcolor{hkustred}{\textbf{CompAcctInd$_{it}$}}: Median $CompAcct_{ijt}$ for \textbf{all firms $j$} in the same industry as firm $i$.
+        \end{itemize}
+        \item Both measures are \textbf{dynamic} (updated annually), \textbf{firm-specific}, and \textbf{output-based}.
     \end{itemize}
 \end{frame}
+
+\begin{frame}{Why These Proxies?}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{\textcolor{hkustblue}{Stock Return $\to$ Economic Events}}
+            \begin{itemize}
+                \item Returns proxy for the \textbf{net effect} of economic events on the firm \citep{kothari2001capital}.
+                \item Widely used in earnings--returns literature.
+                \item Holding return constant across two firms isolates the \textbf{accounting function} difference.
+            \end{itemize}
+            \vspace{0.2cm}
+            \textcolor{hkustred}{\textbf{Limitation:}} Prices may lead earnings $\Rightarrow$ addressed via \textit{CompAcct-PLE} (adding lagged return).
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{\textcolor{hkustblue}{Earnings $\to$ Financial Statements}}
+            \begin{itemize}
+                \item Earnings is the most important summary measure of income statement performance.
+                \item Keeps the model \textbf{parsimonious and tractable}.
+                \item Output-based: avoids ad hoc decisions about which accounting choices to examine.
+            \end{itemize}
+            \vspace{0.2cm}
+            \textcolor{hkustred}{\textbf{Limitation:}} Captures only one financial statement dimension; balance-sheet comparability is not measured.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+% ============================================================
+% Hypotheses
+% ============================================================
+\section{Hypotheses}
+
+\begin{frame}{Hypotheses and Logic}
+    \begin{block}{H1: Analyst Coverage}
+        Ceteris paribus, financial statement comparability is \textbf{positively associated} with analysts' coverage.
+    \end{block}
+    \textbf{Logic:} Lower information acquisition costs $\Rightarrow$ more analysts willing to cover the firm. Consistent with \citet{lang1996corporate}: analyst following increases in disclosure quality.
+    
+    \vspace{0.3cm}
+    \begin{block}{H2a: Forecast Accuracy}
+        Ceteris paribus, financial statement comparability is \textbf{positively associated} with analysts' forecast accuracy.
+    \end{block}
+    \textbf{Logic:} Higher-quality information from comparable peers helps analysts better evaluate historical performance and forecast earnings.
+    
+    \vspace{0.3cm}
+    \begin{block}{H2b: Forecast Dispersion}
+        Ceteris paribus, financial statement comparability is \textbf{negatively associated} with analysts' forecast dispersion.
+    \end{block}
+    \textbf{Logic:} Superior public information $\Rightarrow$ analysts place more weight on public signals, less on private information $\Rightarrow$ forecasts converge.
+\end{frame}
+
+\begin{frame}{Counter-Arguments (Null Hypotheses)}
+    \begin{itemize}
+        \item \textbf{H1 Null:} Better information environment may \textit{decrease} investor demand for analysts, thus fewer analysts cover the firm.
+        \begin{itemize}
+            \item \textcolor{gray}{But empirical evidence shows analysts primarily \textit{interpret} information rather than convey new information \citep{lang1996corporate}, so lower cost dominates.}
+        \end{itemize}
+        \vspace{0.2cm}
+        \item \textbf{H2a Null:} If information from comparable firms is \textit{noisy or biased}, comparability could reduce accuracy.
+        \vspace{0.2cm}
+        \item \textbf{H2b Null:} Analysts may \textit{interpret} public information differently \citep{harris1993differences, kandel1995differential}, so more public information could \textit{increase} dispersion.
+    \end{itemize}
+\end{frame}
+
+
+% ============================================================
+% Models & Validity
+% ============================================================
+\section{Models \& Validity}
+
+\begin{frame}{Model Specifications}
+    \textbf{Analyst Coverage (OLS):}
+    \[
+        Coverage_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1}  \quad \text{--- Eq.\ (10)}
+    \]
+    \textbf{Forecast Accuracy \& Dispersion (OLS):}
+    \[
+        Forecast\text{-}Metric_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1} \quad \text{--- Eq.\ (11)}
+    \]
+    where $Forecast\text{-}Metric$ is either $Accuracy$ or $Dispersion$.
+    \vspace{0.3cm}
+    
+    \textbf{Controls:} Size, Book-Market, Volume, R\&D, Depreciation, Issue, Predictability, Volatility\textsubscript{Earn}, Volatility\textsubscript{Ret}, SUE, Neg UE, Loss, Neg SI, Days.
+
+    \vspace{0.2cm}
+    \textbf{Estimation:} Industry \& year FE; standard errors clustered at firm and year levels \citep{petersen2009estimating}.
+\end{frame}
+
+\begin{frame}{Firm-Pair Level Tests}
+    \textbf{Construct Validity --- Peer Selection (Probit):}
+    \[
+        AnalystComp_{ikj} = \alpha + \beta_1 \, CompAcct_{ij} + \gamma \, Controls_j + \varepsilon_{ikj} \quad \text{--- Eq.\ (6)}
+    \]
+    $AnalystComp_{ikj} = 1$ if analyst $k$ writing about firm $i$ refers to firm $j$ as a peer.
+    
+    \vspace{0.3cm}
+    \textbf{Conditional Coverage (Probit):}
+    \[
+        CondCoverage_{ikjt} = \alpha + \beta_1 \, CompAcct_{ijt} + \gamma \, Controls_{jt} + \varepsilon_{ikjt} \quad \text{--- Eq.\ (7)}
+    \]
+    $CondCoverage_{ikjt} = 1$ if analyst $k$ covering firm $i$ also covers firm $j$.
+    
+    \vspace{0.3cm}
+    \textbf{Correlated Forecast Errors (OLS):}
+    \[
+        CorrFcstError_{ijt} = -|FcstError_{it} - FcstError_{jt}| \quad \text{--- Eq.\ (8)}
+    \]
+    Higher values $\Rightarrow$ more systematic (correlated) errors across comparable firms.
+\end{frame}
+
+\begin{frame}{Construct Validity: Hand-Collected Analyst Reports}
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
+            \begin{itemize}
+                \item \textbf{Design:} Hand-collected 1,000 analyst reports from Investext for FY2005.
+                \item Extracted firm $j$ peers mentioned by analysts when analyzing firm $i$.
+                \item \textbf{Treatment:} $j$ chosen as peer ($AnalystComp=1$). \textbf{Control:} randomly matched firm in same 2-digit SIC.
+                \item \textbf{Result:} $CompAcct_{ij}$ is \textbf{positively and significantly} associated with the probability of being selected as a peer.
+                \item A 1-SD increase in $CompAcct$ $\Rightarrow$ 5\% increase in probability of being a peer (industry-matched); 3\% (industry-size-BM matched).
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.42\textwidth}
+            \centering
+            \resizebox{\textwidth}{!}{
+            \begin{tikzpicture}[
+                node distance=0.6cm,
+                box/.style={draw, rounded corners, fill=gray!10, align=center, minimum width=3.5cm, minimum height=0.7cm, font=\small},
+                arrow/.style={-latex, thick, draw=hkustblue}
+            ]
+                \node[box, fill=hkustyellow!25] (measure) {$CompAcct_{ij}$};
+                \node[box, below=of measure] (question) {Does analyst use\\firm $j$ as peer?};
+                \node[box, fill=hkustred!15, below left=0.6cm and -0.4cm of question] (yes) {Yes: Treatment};
+                \node[box, fill=gray!20, below right=0.6cm and -0.4cm of question] (no) {No: Control\\(industry-matched)};
+                \node[box, fill=hkustyellow!40, below=1.5cm of question] (result) {$\beta_1 > 0$ ***\\Validates measure};
+                
+                \draw[arrow] (measure) -- (question);
+                \draw[arrow] (question) -- (yes);
+                \draw[arrow] (question) -- (no);
+                \draw[arrow] (yes) -- (result);
+                \draw[arrow] (no) -- (result);
+            \end{tikzpicture}
+            }
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Descriptive Validation of the Measure}
+    The measure behaves as expected across economic and earnings partitions:
+    \vspace{0.2cm}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \textbf{\textcolor{hkustblue}{Economic Partitions}}
+            \begin{itemize}
+                \item \textbf{Same industry:} Mean $CompAcct = -2.7$
+                \item \textbf{Cross industry:} Mean $\approx -4.1$
+                \item \textbf{Same size quintile:} $-5.6$
+                \item \textbf{Opposite size quintile:} $-6.7$
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \textbf{\textcolor{hkustblue}{Earnings Attribute Partitions}}
+            \begin{itemize}
+                \item Similar \textbf{accrual quality}: $-5.3$ vs.\ $-6.1$
+                \item Similar \textbf{predictability}: $-4.8$ vs.\ $-5.1$
+                \item Similar \textbf{smoothness}: $-4.4$ vs.\ $-5.3$
+                \item Both \textbf{profit/loss}: $-3.7$ vs.\ $-7.1$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    \vspace{0.3cm}
+    \begin{center}
+        \textcolor{hkustred}{\textbf{Takeaway:}} Firms that are more economically similar and have more similar earnings attributes exhibit \textbf{higher comparability} --- consistent with the intended construct.
+    \end{center}
+\end{frame}
+
+\begin{frame}{Endogeneity Concerns \& Robustness}
+    \begin{itemize}
+        \item \textbf{Omitted Variables:} Firm innovation could cause both low comparability and poor information environment.
+        \begin{itemize}
+            \item Controls for size, B/M, industry FE, volatility, and matching strategies mitigate this.
+        \end{itemize}
+        \item \textbf{Reverse Causality:} Analysts may pressure firms to adopt comparable methods \citep{jung2010demand}.
+        \begin{itemize}
+            \item Cannot fully rule out; acknowledged as a caveat.
+        \end{itemize}
+        \item \textbf{Prices Lead Earnings:} \textit{CompAcct-PLE} adds lagged returns to Eq.\ (2) --- results are robust.
+        \item \textbf{Correlated Earnings:} \textit{CompAcct-R$^2$} uses the $R^2$ from regressing firm $i$'s earnings on firm $j$'s earnings --- confirms analyst coverage results; weaker for accuracy/dispersion.
+        \item \textbf{Industry Definition:} Robust to 4-digit SIC and Fama--French 48 industries.
+        \item \textbf{Size \& B/M Partitions:} Results hold for both large and small firms.
+    \end{itemize}
+\end{frame}
+
+
+% ============================================================
+% Conclusion
+% ============================================================
+\section{Summary}
+
+\begin{frame}{Key Takeaways}
+    \begin{enumerate}
+        \item \textbf{Novel Measure:} Develops a firm-specific, output-based, dynamic measure of comparability using only widely available data.
+        \item \textbf{Construct Validity:} Confirmed via hand-collected analyst reports and expected behavior across economic/earnings partitions.
+        \item \textbf{Benefits to Analysts:}
+        \begin{itemize}
+            \item[$\checkmark$] Coverage: $\uparrow$ 10\% for a 1-SD increase in CompAcct4.
+            \item[$\checkmark$] Accuracy: $\uparrow$ 23\% improvement for a 1-SD increase.
+            \item[$\checkmark$] Dispersion: $\downarrow$ 27\% reduction for a 1-SD increase.
+        \end{itemize}
+        \item \textbf{Broader Implication:} The measure can assess comparability changes from new standards (e.g., IFRS adoption).
+    \end{enumerate}
+    \vspace{0.3cm}
+    \begin{center}
+        \textcolor{hkustred}{\textbf{Bottom line:}} Comparability lowers information acquisition costs and improves the quality of analysts' information sets.
+    \end{center}
+\end{frame}
+
 
 % References
 \begin{frame}[allowframebreaks]{References}
