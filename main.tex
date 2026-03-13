@@ -344,22 +344,23 @@
             \resizebox{\textwidth}{!}{
             \begin{tikzpicture}[
                 box/.style={draw, rounded corners, fill=gray!10, align=center, minimum height=0.6cm, font=\footnotesize},
-                arrow/.style={-latex, thick, draw=hkustblue}
+                arrow/.style={-latex, thick, draw=hkustblue},
+                lbl/.style={font=\scriptsize\bfseries}
             ]
                 \node[box, fill=hkustyellow!25] (reports) at (0,0) {1,000 analyst reports\\(Investext, FY2005)};
-                \node[box] (firmi) at (4.5,0) {Analyst writes\\about firm $i$};
+                \node[box] (firmi) at (4.5,0) {Analyst $k$ writes\\about firm $i$};
                 \draw[arrow] (reports) -- (firmi);
 
-                \node[box, fill=hkustred!15] (chosen) at (2.5,-1.5) {Firm $j$ chosen as peer};
-                \node[box, fill=gray!20] (control) at (6.5,-1.5) {Random firm $j$ (same SIC)};
-                \draw[arrow] (firmi) -- node[left, font=\scriptsize]{Yes} (chosen);
-                \draw[arrow] (firmi) -- node[right, font=\scriptsize]{No} (control);
+                \node[box, fill=hkustred!15, minimum width=2.6cm] (chosen) at (2,-1.6) {\textbf{Treatment} ($Y\!=\!1$)\\\footnotesize Firm $j$ chosen as peer};
+                \node[box, fill=gray!25, minimum width=2.6cm] (control) at (7,-1.6) {\textbf{Control} ($Y\!=\!0$)\\\footnotesize Random firm $j$ (same SIC)};
+                \draw[arrow] (firmi) -- node[left, lbl]{\shortstack{Peer\\[-2pt]mentioned}} (chosen);
+                \draw[arrow] (firmi) -- node[right, lbl]{\shortstack{Not\\[-2pt]mentioned}} (control);
 
-                \node[box, fill=hkustyellow!40, minimum width=4cm] (test) at (4.5,-3) {$CompAcct_{ij}$ higher\\for chosen peers?};
+                \node[box, fill=hkustyellow!40, minimum width=5cm] (test) at (4.5,-3.3) {Compare $CompAcct_{ij}$\\\footnotesize treatment vs.\ control};
                 \draw[arrow] (chosen) -- (test);
                 \draw[arrow] (control) -- (test);
 
-                \node[font=\footnotesize\bfseries, text=hkustred] at (4.5,-3.9) {$\beta_1 > 0$ *** $\Rightarrow$ Validated};
+                \node[font=\footnotesize\bfseries, text=hkustred] at (4.5,-4.2) {$\beta_1 > 0$ *** $\Rightarrow$ Measure validated};
             \end{tikzpicture}
             }
             \vspace{0.15cm}
