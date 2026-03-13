@@ -100,12 +100,12 @@
 
 \begin{document}
 
-% SLIDE 1: Title
+% SLIDE 0: Title
 \begin{frame}
     \titlepage
 \end{frame}
 
-% SLIDE 2: Roadmap
+% SLIDE 0: Roadmap
 \begin{frame}{Roadmap}
     \tableofcontents
 \end{frame}
@@ -116,34 +116,41 @@
 % ============================================================
 \section{Introduction}
 
-\begin{frame}{Motivation}
+% --- SLIDE 1: Motivation + Prior Literature + Gap ---
+\begin{frame}{Motivation, Prior Literature \& Gap}
     \begin{itemize}
-        \item \textbf{Regulatory Emphasis:} The SEC \citeyearpar{sec2000} stresses that comparable financial statements facilitate \textbf{efficient capital allocation} and nurture investor confidence.
-        \item \textbf{FASB Conceptual Framework:} ``Investing and lending decisions \dots\ cannot be made rationally if comparative information is not available'' \citep{fasb1980}.
-        \item \textbf{Practical Importance:} Financial analysis textbooks universally emphasize cross-firm comparability for ratio analysis and performance benchmarking.
-        \item \textbf{The Gap:} Despite widespread agreement on its importance, \textcolor{hkustred}{\textbf{no empirical construct}} of comparability existed, and \textcolor{hkustred}{\textbf{little evidence}} documented its benefits to users.
+        \item \textbf{Importance:} The SEC \citeyearpar{sec2000} and FASB \citeyearpar{fasb1980} stress that comparable financial statements facilitate efficient capital allocation. Textbooks universally emphasize cross-firm comparability.
+        \item \textbf{Prior Literature:}
+        \begin{itemize}
+            \item \textit{Input-based:} \citet{bradshaw2008harmonizing}, \citet{defond2003empirical}, \citet{bradshaw2009accounting} --- examine accounting method heterogeneity (e.g., LIFO vs.\ FIFO). Requires ad hoc decisions on which choices to use and costly data collection.
+            \item \textit{Cross-sectional levels:} \citet{joos1994effects}, \citet{land2002empirical} --- compare contemporaneous levels (ROE, multiples) at a single point. Static, not firm-specific.
+        \end{itemize}
+        \item \textbf{Gap:} Despite widespread agreement on importance, \textcolor{hkustred}{\textbf{no empirical construct}} of comparability existed, and \textcolor{hkustred}{\textbf{little evidence}} documented its benefits to users.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Research Question}
+
+% --- SLIDE 2: Research Questions ---
+\begin{frame}{Research Questions}
     \vspace{0.5cm}
     \begin{center}
         \Large \textit{``How can we \textbf{measure} financial statement comparability, and does higher comparability \textbf{benefit} financial statement users?''}
     \end{center}
     \vspace{0.5cm}
     \begin{itemize}
-        \item \textbf{Develop} a firm-specific, output-based, quantitative measure of financial statement comparability.
+        \item \textbf{Develop} a firm-specific, \textcolor{hkustred}{\textbf{output-based}}, quantitative measure of financial statement comparability --- contrast with input-based and static approaches in prior work.
         \item \textbf{Document} benefits to sell-side analysts: coverage, forecast accuracy, and forecast dispersion.
     \end{itemize}
 \end{frame}
 
 
 % ============================================================
-% Theoretical Foundation
+% Comparability Measure
 % ============================================================
-\section{Theoretical Foundation}
+\section{Comparability Measure}
 
-\begin{frame}{Conceptual Definition of Comparability}
+% --- SLIDE 3: Definition of Comparability ---
+\begin{frame}{Definition of Comparability}
     \begin{block}{FASB Definition}
         ``Comparability is the quality of information that enables users to identify \textbf{similarities and differences} between two sets of economic phenomena'' \citep{fasb1980}.
     \end{block}
@@ -158,134 +165,55 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Theoretical Mechanism: Why Comparability Benefits Analysts}
-    \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
-            \begin{itemize}
-                \item \textbf{Better Benchmarks:} More comparable firms constitute better benchmarks for evaluating performance.
-                \item \textbf{Information Transfer:} Financial information of comparable peers is more transferable \citep{ramnath2002investor, gleason2008contagion, durnev2009corporate}.
-                \item \textbf{Lower Acquisition Cost:} Analysts face lower costs when acquiring and processing information about firms with comparable peers.
-                \item \textbf{Net Effect:} A richer, higher-quality information set for the analyst.
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.42\textwidth}
-            \centering
-            \resizebox{\textwidth}{!}{
-            \begin{tikzpicture}[
-                node distance=0.6cm,
-                box/.style={draw, rounded corners, fill=gray!10, align=center, minimum width=3.8cm, minimum height=0.7cm, font=\small},
-                arrow/.style={-latex, thick, draw=hkustblue}
-            ]
-                \node[box, fill=hkustyellow!25] (comp) {Higher Comparability};
-                \node[box, below=of comp] (bench) {Better Benchmarks};
-                \node[box, below=of bench] (transfer) {Greater Info Transfer};
-                \node[box, below=of transfer] (cost) {Lower Acquisition Cost};
-                \node[box, below=of cost, fill=hkustred!20] (quality) {Higher-Quality\\Info Set for Analysts};
-                
-                \draw[arrow] (comp) -- (bench);
-                \draw[arrow] (comp) -- (transfer);
-                \draw[arrow] (bench) -- (cost);
-                \draw[arrow] (transfer) -- (cost);
-                \draw[arrow] (cost) -- (quality);
-            \end{tikzpicture}
-            }
-        \end{column}
-    \end{columns}
-\end{frame}
-
 
 % ============================================================
-% Literature & Contribution
+% Research Design
 % ============================================================
-\section{Literature \& Contribution}
+\section{Research Design}
 
-\begin{frame}{Prior Literature on Comparability}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Input-Based (Accounting Methods)}}
-            \begin{itemize}
-                \item \citet{bradshaw2008harmonizing}: Whether international firms adopting U.S.\ GAAP actually harmonize methods.
-                \item \citet{defond2003empirical}: Accounting choice heterogeneity (LIFO vs.\ FIFO) increases comparison difficulty.
-                \item \citet{bradshaw2009accounting}: Atypical accounting methods in an industry.
-            \end{itemize}
-            \vspace{0.2cm}
-            \textcolor{hkustred}{\textbf{Limitations:}} Researcher must decide \textit{which} choices, \textit{how} to weight them, and data collection is costly.
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Cross-Sectional Levels}}
-            \begin{itemize}
-                \item \citet{joos1994effects}, \citet{land2002empirical}: Similarities in contemporaneous levels (ROE, size, price multiples) at a single point.
-                \item Designed primarily for \textbf{cross-country} comparisons.
-            \end{itemize}
-            \vspace{0.2cm}
-            \textcolor{hkustred}{\textbf{Limitations:}} Static, not firm-specific, and do not capture dynamic similarities over time.
-        \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{How This Paper Differs}
-    \begin{center}
-    \small
-    \begin{tabular}{p{3.2cm} p{4.2cm} p{4.8cm}}
-        \toprule
-        \textbf{Dimension} & \textbf{Prior Literature} & \textbf{De Franco et al.\ (2011)} \\
-        \midrule
-        Approach & \textbf{Input-based} (accounting methods) & \textbf{Output-based} (reported earnings) \\[4pt]
-        Level & Country- or method-level & \textbf{Firm-specific} and \textbf{firm-pair} \\[4pt]
-        Dynamics & Static, single point in time & \textbf{Dynamic}, rolling 16 quarters \\[4pt]
-        Data & Hand-collected accounting choices & \textbf{Widely available} return \& earnings data \\[4pt]
-        vs.\ Earnings Attributes & Firm-specific (accrual quality, predictability) & \textbf{Relational} measure across firm pairs \\[4pt]
-        Outcome & Accounting harmonization & \textbf{Benefits to users} (analysts) \\
-        \bottomrule
-    \end{tabular}
-    \end{center}
-\end{frame}
-
-
-% ============================================================
-% Empirical Specifications
-% ============================================================
-\section{Empirical Specifications}
-
-\begin{frame}{Libby Box: Research Design Overview}
+% --- SLIDE 4: Libby Box ---
+\begin{frame}{Research Design (Libby Box)}
+    \vfill
     \centering
-    \resizebox{0.92\textwidth}{!}{
+    \resizebox{0.98\textwidth}{!}{
     \begin{tikzpicture}[
-        box/.style={draw, thick, rounded corners=3pt, minimum width=5cm, minimum height=1.5cm, align=center, font=\small},
-        label/.style={font=\bfseries\small, text=hkustblue},
+        box/.style={draw, thick, rounded corners=3pt, minimum width=5.5cm, minimum height=1.7cm, align=center, font=\normalsize},
+        label/.style={font=\bfseries\normalsize, text=hkustblue},
         arrow/.style={-latex, very thick, draw=hkustblue},
         darrow/.style={dashed, -latex, thick, draw=gray!70}
     ]
     
     % Top row: Conceptual
-    \node[box, fill=hkustyellow!15] (cx) at (0, 3) {Similarity of accounting\\systems $f_i(\cdot) \approx f_j(\cdot)$};
-    \node[box, fill=hkustyellow!15] (cy) at (10, 3) {Information quality\\for financial statement users};
+    \node[box, fill=hkustyellow!15] (cx) at (0, 3.2) {Similarity of accounting\\systems $f_i(\cdot) \approx f_j(\cdot)$};
+    \node[box, fill=hkustyellow!15] (cy) at (11, 3.2) {Information quality\\for financial statement users};
     
     % Bottom row: Operational
     \node[box, fill=gray!10] (ox) at (0, 0) {\textbf{CompAcct}: $-\frac{1}{16}\sum |E(Earn_{iit}) - E(Earn_{ijt})|$ \\ from earnings--return regression};
-    \node[box, fill=gray!10] (oy) at (10, 0) {\textbf{Y}: Analyst Coverage,\\Forecast Accuracy, Dispersion};
+    \node[box, fill=gray!10] (oy) at (11, 0) {\textbf{Y}: Analyst Coverage,\\Forecast Accuracy, Dispersion};
     
     % Arrows
-    \draw[arrow] (cx) -- node[above, font=\small]{Predicted causal relation} (cy);
-    \draw[darrow] (cx) -- node[left, font=\small, text=black]{Operationalize} (ox);
-    \draw[darrow] (cy) -- node[right, font=\small, text=black]{Operationalize} (oy);
-    \draw[arrow] (ox) -- node[below, font=\small]{Empirical association} (oy);
+    \draw[arrow] (cx) -- node[above, font=\normalsize]{Predicted causal relation} (cy);
+    \draw[darrow] (cx) -- node[left, font=\normalsize, text=black]{Operationalize} (ox);
+    \draw[darrow] (cy) -- node[right, font=\normalsize, text=black]{Operationalize} (oy);
+    \draw[arrow] (ox) -- node[below, font=\normalsize]{Empirical association} (oy);
     
     % Labels
-    \node[label, above=0.15cm of cx] {Conceptual IV (X)};
-    \node[label, above=0.15cm of cy] {Conceptual DV (Y)};
-    \node[label, below=0.15cm of ox] {Operational IV (X)};
-    \node[label, below=0.15cm of oy] {Operational DV (Y)};
+    \node[label, above=0.2cm of cx] {Conceptual IV (X)};
+    \node[label, above=0.2cm of cy] {Conceptual DV (Y)};
+    \node[label, below=0.2cm of ox] {Operational IV (X)};
+    \node[label, below=0.2cm of oy] {Operational DV (Y)};
     
     % Controls
-    \node[box, fill=hkustred!10, minimum width=9.5cm, minimum height=0.8cm] (ctrl) at (5, -2) {Controls: Size, B/M, Volume, R\&D, Depreciation, Issue, Predictability, Volatility};
+    \node[box, fill=hkustred!10, minimum width=10.5cm, minimum height=0.9cm, font=\normalsize] (ctrl) at (5.5, -2.2) {Controls: Size, B/M, Volume, R\&D, Depreciation, Issue, Predictability, Volatility};
     \draw[darrow, draw=hkustred!70] (ctrl) -- ($(ox.south)+(0.5,0)$);
     \draw[darrow, draw=hkustred!70] (ctrl) -- ($(oy.south)+(-0.5,0)$);
     
     \end{tikzpicture}
     }
+    \vfill
 \end{frame}
 
+% --- SLIDE 5: Measuring Comparability ---
 \begin{frame}{Measuring Comparability: The Accounting Function}
     \textbf{Step 1:} Estimate each firm's accounting function using 16 quarters of data:
     \[
@@ -304,6 +232,7 @@
     Greater (less negative) values $\Rightarrow$ \textcolor{hkustred}{\textbf{greater comparability}}.
 \end{frame}
 
+% --- SLIDE 6: Aggregation to Firm Level ---
 \begin{frame}{Aggregation to Firm-Level Measures}
     \begin{itemize}
         \item $CompAcct_{ijt}$ is computed for \textbf{every firm-pair} $(i,j)$ within the same 2-digit SIC industry.
@@ -314,31 +243,12 @@
         \end{itemize}
         \item Both measures are \textbf{dynamic} (updated annually), \textbf{firm-specific}, and \textbf{output-based}.
     \end{itemize}
-\end{frame}
-
-\begin{frame}{Why These Proxies?}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Stock Return $\to$ Economic Events}}
-            \begin{itemize}
-                \item Returns proxy for the \textbf{net effect} of economic events on the firm \citep{kothari2001capital}.
-                \item Widely used in earnings--returns literature.
-                \item Holding return constant across two firms isolates the \textbf{accounting function} difference.
-            \end{itemize}
-            \vspace{0.2cm}
-            \textcolor{hkustred}{\textbf{Limitation:}} Prices may lead earnings $\Rightarrow$ addressed via \textit{CompAcct-PLE} (adding lagged return).
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Earnings $\to$ Financial Statements}}
-            \begin{itemize}
-                \item Earnings is the most important summary measure of income statement performance.
-                \item Keeps the model \textbf{parsimonious and tractable}.
-                \item Output-based: avoids ad hoc decisions about which accounting choices to examine.
-            \end{itemize}
-            \vspace{0.2cm}
-            \textcolor{hkustred}{\textbf{Limitation:}} Captures only one financial statement dimension; balance-sheet comparability is not measured.
-        \end{column}
-    \end{columns}
+    \vspace{0.3cm}
+    \textbf{Why these proxies?}
+    \begin{itemize}
+        \item \textbf{Stock return} proxies for economic events \citep{kothari2001capital}; holding it constant isolates the accounting function difference.
+        \item \textbf{Earnings} is the key income statement output --- keeps the model parsimonious and avoids ad hoc choices about which accounting methods to examine.
+    \end{itemize}
 \end{frame}
 
 
@@ -347,36 +257,28 @@
 % ============================================================
 \section{Hypotheses}
 
+% --- SLIDE 7: Hypotheses and Logic ---
 \begin{frame}{Hypotheses and Logic}
+    \small
     \begin{block}{H1: Analyst Coverage}
-        Ceteris paribus, financial statement comparability is \textbf{positively associated} with analysts' coverage.
+        \small Financial statement comparability is \textbf{positively associated} with analysts' coverage.
     \end{block}
-    \textbf{Logic:} Lower information acquisition costs $\Rightarrow$ more analysts willing to cover the firm. Consistent with \citet{lang1996corporate}: analyst following increases in disclosure quality.
+    \vspace{-0.1cm}
+    \small\textbf{Logic:} Lower info acquisition costs $\Rightarrow$ more analysts cover the firm \citep{bhushan1989analyst, lang1996corporate}.
     
-    \vspace{0.3cm}
+    \vspace{0.1cm}
     \begin{block}{H2a: Forecast Accuracy}
-        Ceteris paribus, financial statement comparability is \textbf{positively associated} with analysts' forecast accuracy.
+        \small Financial statement comparability is \textbf{positively associated} with analysts' forecast accuracy.
     \end{block}
-    \textbf{Logic:} Higher-quality information from comparable peers helps analysts better evaluate historical performance and forecast earnings.
+    \vspace{-0.1cm}
+    \small\textbf{Logic:} Higher-quality information from comparable peers helps analysts better evaluate performance and forecast earnings.
     
-    \vspace{0.3cm}
+    \vspace{0.1cm}
     \begin{block}{H2b: Forecast Dispersion}
-        Ceteris paribus, financial statement comparability is \textbf{negatively associated} with analysts' forecast dispersion.
+        \small Financial statement comparability is \textbf{negatively associated} with analysts' forecast dispersion.
     \end{block}
-    \textbf{Logic:} Superior public information $\Rightarrow$ analysts place more weight on public signals, less on private information $\Rightarrow$ forecasts converge.
-\end{frame}
-
-\begin{frame}{Counter-Arguments (Null Hypotheses)}
-    \begin{itemize}
-        \item \textbf{H1 Null:} Better information environment may \textit{decrease} investor demand for analysts, thus fewer analysts cover the firm.
-        \begin{itemize}
-            \item \textcolor{gray}{But empirical evidence shows analysts primarily \textit{interpret} information rather than convey new information \citep{lang1996corporate}, so lower cost dominates.}
-        \end{itemize}
-        \vspace{0.2cm}
-        \item \textbf{H2a Null:} If information from comparable firms is \textit{noisy or biased}, comparability could reduce accuracy.
-        \vspace{0.2cm}
-        \item \textbf{H2b Null:} Analysts may \textit{interpret} public information differently \citep{harris1993differences, kandel1995differential}, so more public information could \textit{increase} dispersion.
-    \end{itemize}
+    \vspace{-0.1cm}
+    \small\textbf{Logic:} Superior public info $\Rightarrow$ more weight on public signals, less on private $\Rightarrow$ forecasts converge.
 \end{frame}
 
 
@@ -385,150 +287,92 @@
 % ============================================================
 \section{Models \& Validity}
 
+% --- SLIDE 8: Model Specifications ---
 \begin{frame}{Model Specifications}
-    \textbf{Analyst Coverage (OLS):}
+    \textbf{Analyst Coverage (OLS, Eq.\ 10):}
     \[
-        Coverage_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1}  \quad \text{--- Eq.\ (10)}
+        Coverage_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1}
     \]
-    \textbf{Forecast Accuracy \& Dispersion (OLS):}
+
+    \textbf{Forecast Accuracy \& Dispersion (OLS, Eq.\ 11):}
     \[
-        Forecast\text{-}Metric_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1} \quad \text{--- Eq.\ (11)}
+        Forecast\text{-}Metric_{it+1} = \alpha + \beta_1 \, Comparability_{it} + \gamma \, Controls_{it} + \varepsilon_{it+1}
     \]
-    where $Forecast\text{-}Metric$ is either $Accuracy$ or $Dispersion$.
+    where $Forecast\text{-}Metric \in \{Accuracy, \; Dispersion\}$.
     \vspace{0.3cm}
     
-    \textbf{Controls:} Size, Book-Market, Volume, R\&D, Depreciation, Issue, Predictability, Volatility\textsubscript{Earn}, Volatility\textsubscript{Ret}, SUE, Neg UE, Loss, Neg SI, Days.
+    \textbf{Controls:}
+    \begin{itemize}
+        \item Eq.\ (10): Size, B/M, Volume, R\&D, Depreciation, Issue, Predictability, Volatility\textsubscript{Earn}, Volatility\textsubscript{Ret}.
+        \item Eq.\ (11): adds SUE, Neg UE, Loss, Neg SI, Days.
+    \end{itemize}
 
     \vspace{0.2cm}
-    \textbf{Estimation:} Industry \& year FE; standard errors clustered at firm and year levels \citep{petersen2009estimating}.
+    \textbf{Estimation:} Industry \& year FE; SE clustered at firm and year levels \citep{petersen2009estimating}.
 \end{frame}
 
-\begin{frame}{Firm-Pair Level Tests}
-    \textbf{Construct Validity --- Peer Selection (Probit):}
-    \[
-        AnalystComp_{ikj} = \alpha + \beta_1 \, CompAcct_{ij} + \gamma \, Controls_j + \varepsilon_{ikj} \quad \text{--- Eq.\ (6)}
-    \]
-    $AnalystComp_{ikj} = 1$ if analyst $k$ writing about firm $i$ refers to firm $j$ as a peer.
-    
-    \vspace{0.3cm}
-    \textbf{Conditional Coverage (Probit):}
-    \[
-        CondCoverage_{ikjt} = \alpha + \beta_1 \, CompAcct_{ijt} + \gamma \, Controls_{jt} + \varepsilon_{ikjt} \quad \text{--- Eq.\ (7)}
-    \]
-    $CondCoverage_{ikjt} = 1$ if analyst $k$ covering firm $i$ also covers firm $j$.
-    
-    \vspace{0.3cm}
-    \textbf{Correlated Forecast Errors (OLS):}
-    \[
-        CorrFcstError_{ijt} = -|FcstError_{it} - FcstError_{jt}| \quad \text{--- Eq.\ (8)}
-    \]
-    Higher values $\Rightarrow$ more systematic (correlated) errors across comparable firms.
-\end{frame}
-
-\begin{frame}{Construct Validity: Hand-Collected Analyst Reports}
+% --- SLIDE 9: Descriptive Statistics ---
+\begin{frame}{Descriptive Statistics (Table 2)}
     \begin{columns}[T]
-        \begin{column}{0.55\textwidth}
+        \begin{column}{0.53\textwidth}
+            \small
             \begin{itemize}
-                \item \textbf{Design:} Hand-collected 1,000 analyst reports from Investext for FY2005.
-                \item Extracted firm $j$ peers mentioned by analysts when analyzing firm $i$.
-                \item \textbf{Treatment:} $j$ chosen as peer ($AnalystComp=1$). \textbf{Control:} randomly matched firm in same 2-digit SIC.
-                \item \textbf{Result:} $CompAcct_{ij}$ is \textbf{positively and significantly} associated with the probability of being selected as a peer.
-                \item A 1-SD increase in $CompAcct$ $\Rightarrow$ 5\% increase in probability of being a peer (industry-matched); 3\% (industry-size-BM matched).
+                \item \textbf{Panel A:} Mean (median) $CompAcct = -5.1\%$ ($-2.7\%$) of market value for a random sample of 635,777 firm-pairs (year 2005). Distribution is left-skewed.
+                \item \textbf{Panel B:} Same-industry pairs have higher comparability ($-2.7$) than cross-industry ($\approx -4.1$). Same-size quintile pairs ($-5.6$) more comparable than opposite ($-6.7$).
+                \item \textbf{Panel C:} Firms with similar earnings attributes (accrual quality, predictability, smoothness, loss status) have higher $CompAcct$ --- the measure behaves as expected.
             \end{itemize}
         \end{column}
-        \begin{column}{0.42\textwidth}
+        \begin{column}{0.45\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.9\textwidth, keepaspectratio]{pic/tab2.png}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- SLIDE 10: Validity Test ---
+\begin{frame}{Construct Validity: Use of Peers in Analyst Reports (Table 3)}
+    \small
+    \textbf{Probit Model (Eq.\ 6):} \quad
+    $AnalystComp_{ikj} = \alpha + \beta_1 CompAcct_{ij} + \gamma Controls_j + \varepsilon$
+    \vspace{0.2cm}
+
+    \begin{columns}[T]
+        \begin{column}{0.55\textwidth}
             \centering
             \resizebox{\textwidth}{!}{
             \begin{tikzpicture}[
-                node distance=0.6cm,
-                box/.style={draw, rounded corners, fill=gray!10, align=center, minimum width=3.5cm, minimum height=0.7cm, font=\small},
+                box/.style={draw, rounded corners, fill=gray!10, align=center, minimum height=0.6cm, font=\footnotesize},
                 arrow/.style={-latex, thick, draw=hkustblue}
             ]
-                \node[box, fill=hkustyellow!25] (measure) {$CompAcct_{ij}$};
-                \node[box, below=of measure] (question) {Does analyst use\\firm $j$ as peer?};
-                \node[box, fill=hkustred!15, below left=0.6cm and -0.4cm of question] (yes) {Yes: Treatment};
-                \node[box, fill=gray!20, below right=0.6cm and -0.4cm of question] (no) {No: Control\\(industry-matched)};
-                \node[box, fill=hkustyellow!40, below=1.5cm of question] (result) {$\beta_1 > 0$ ***\\Validates measure};
-                
-                \draw[arrow] (measure) -- (question);
-                \draw[arrow] (question) -- (yes);
-                \draw[arrow] (question) -- (no);
-                \draw[arrow] (yes) -- (result);
-                \draw[arrow] (no) -- (result);
+                \node[box, fill=hkustyellow!25] (reports) at (0,0) {1,000 analyst reports\\(Investext, FY2005)};
+                \node[box] (firmi) at (4.5,0) {Analyst writes\\about firm $i$};
+                \draw[arrow] (reports) -- (firmi);
+
+                \node[box, fill=hkustred!15] (chosen) at (2.5,-1.5) {Firm $j$ chosen as peer};
+                \node[box, fill=gray!20] (control) at (6.5,-1.5) {Random firm $j$ (same SIC)};
+                \draw[arrow] (firmi) -- node[left, font=\scriptsize]{Yes} (chosen);
+                \draw[arrow] (firmi) -- node[right, font=\scriptsize]{No} (control);
+
+                \node[box, fill=hkustyellow!40, minimum width=4cm] (test) at (4.5,-3) {$CompAcct_{ij}$ higher\\for chosen peers?};
+                \draw[arrow] (chosen) -- (test);
+                \draw[arrow] (control) -- (test);
+
+                \node[font=\footnotesize\bfseries, text=hkustred] at (4.5,-3.9) {$\beta_1 > 0$ *** $\Rightarrow$ Validated};
             \end{tikzpicture}
             }
+            \vspace{0.15cm}
+            \includegraphics[width=\textwidth, keepaspectratio]{pic/tab3.png}
         \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}{Descriptive Validation of the Measure}
-    The measure behaves as expected across economic and earnings partitions:
-    \vspace{0.2cm}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Economic Partitions}}
+        \begin{column}{0.43\textwidth}
             \begin{itemize}
-                \item \textbf{Same industry:} Mean $CompAcct = -2.7$
-                \item \textbf{Cross industry:} Mean $\approx -4.1$
-                \item \textbf{Same size quintile:} $-5.6$
-                \item \textbf{Opposite size quintile:} $-6.7$
-            \end{itemize}
-        \end{column}
-        \begin{column}{0.48\textwidth}
-            \textbf{\textcolor{hkustblue}{Earnings Attribute Partitions}}
-            \begin{itemize}
-                \item Similar \textbf{accrual quality}: $-5.3$ vs.\ $-6.1$
-                \item Similar \textbf{predictability}: $-4.8$ vs.\ $-5.1$
-                \item Similar \textbf{smoothness}: $-4.4$ vs.\ $-5.3$
-                \item Both \textbf{profit/loss}: $-3.7$ vs.\ $-7.1$
+                \item $AnalystComp = 1$ if analyst $k$ uses firm $j$ as a peer when writing about firm $i$.
+                \item \textbf{$CompAcct_{ij}$} is \textbf{positive and significant}: 1-SD increase $\Rightarrow$ \textbf{5\%} (Col.\ 1, industry-matched) and \textbf{3\%} (Col.\ 2, industry-size-BM matched) higher probability of being selected as a peer.
+                \item Validates that the measure captures comparability as perceived by analysts.
             \end{itemize}
         \end{column}
     \end{columns}
-    \vspace{0.3cm}
-    \begin{center}
-        \textcolor{hkustred}{\textbf{Takeaway:}} Firms that are more economically similar and have more similar earnings attributes exhibit \textbf{higher comparability} --- consistent with the intended construct.
-    \end{center}
-\end{frame}
-
-\begin{frame}{Endogeneity Concerns \& Robustness}
-    \begin{itemize}
-        \item \textbf{Omitted Variables:} Firm innovation could cause both low comparability and poor information environment.
-        \begin{itemize}
-            \item Controls for size, B/M, industry FE, volatility, and matching strategies mitigate this.
-        \end{itemize}
-        \item \textbf{Reverse Causality:} Analysts may pressure firms to adopt comparable methods \citep{jung2010demand}.
-        \begin{itemize}
-            \item Cannot fully rule out; acknowledged as a caveat.
-        \end{itemize}
-        \item \textbf{Prices Lead Earnings:} \textit{CompAcct-PLE} adds lagged returns to Eq.\ (2) --- results are robust.
-        \item \textbf{Correlated Earnings:} \textit{CompAcct-R$^2$} uses the $R^2$ from regressing firm $i$'s earnings on firm $j$'s earnings --- confirms analyst coverage results; weaker for accuracy/dispersion.
-        \item \textbf{Industry Definition:} Robust to 4-digit SIC and Fama--French 48 industries.
-        \item \textbf{Size \& B/M Partitions:} Results hold for both large and small firms.
-    \end{itemize}
-\end{frame}
-
-
-% ============================================================
-% Conclusion
-% ============================================================
-\section{Summary}
-
-\begin{frame}{Key Takeaways}
-    \begin{enumerate}
-        \item \textbf{Novel Measure:} Develops a firm-specific, output-based, dynamic measure of comparability using only widely available data.
-        \item \textbf{Construct Validity:} Confirmed via hand-collected analyst reports and expected behavior across economic/earnings partitions.
-        \item \textbf{Benefits to Analysts:}
-        \begin{itemize}
-            \item[$\checkmark$] Coverage: $\uparrow$ 10\% for a 1-SD increase in CompAcct4.
-            \item[$\checkmark$] Accuracy: $\uparrow$ 23\% improvement for a 1-SD increase.
-            \item[$\checkmark$] Dispersion: $\downarrow$ 27\% reduction for a 1-SD increase.
-        \end{itemize}
-        \item \textbf{Broader Implication:} The measure can assess comparability changes from new standards (e.g., IFRS adoption).
-    \end{enumerate}
-    \vspace{0.3cm}
-    \begin{center}
-        \textcolor{hkustred}{\textbf{Bottom line:}} Comparability lowers information acquisition costs and improves the quality of analysts' information sets.
-    \end{center}
 \end{frame}
 
 
