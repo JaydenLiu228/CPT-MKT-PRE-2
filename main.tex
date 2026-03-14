@@ -37,22 +37,8 @@
 %    CUSTOM NAVIGATION HEADLINE
 %----------------------------------------------------------------------------------------
 
-% 1. Set the Banner Colors
-\setbeamercolor{section in head/foot}{bg=NavyRed, fg=white}
-
-% 2. Style the Dots (Mini Frames)
-\setbeamercolor{mini frame}{fg=white}
-\setbeamercolor{section in head/foot shaded}{fg=white!50!NavyRed}
-
-% 3. Define the Headline Template
-\setbeamertemplate{headline}{%
-  \leavevmode%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=2.3ex,dp=2.5ex]{section in head/foot}%
-    % --- Force links to be white only inside this banner ---
-    \hypersetup{linkcolor=white}% 
-    \insertnavigation{\paperwidth}%
-  \end{beamercolorbox}%
-}
+% Remove the top navigation bar
+\setbeamertemplate{headline}{}
 
 % 4. Custom Footer with Author, Title, Date, and Page Numbers
 \definecolor{MiddleRed}{RGB}{160, 50, 45} % Lighter red for footer strip
@@ -103,11 +89,6 @@
 % SLIDE 0: Title
 \begin{frame}
     \titlepage
-\end{frame}
-
-% SLIDE 0: Roadmap
-\begin{frame}{Roadmap}
-    \tableofcontents
 \end{frame}
 
 
